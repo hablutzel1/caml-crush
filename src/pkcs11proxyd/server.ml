@@ -988,6 +988,11 @@ let set_daemonize_args s =
   ()
 
 let start() =
+  (* Set up signal handler for SIGINT *)
+  Sys.set_signal Sys.sigint (Sys.Signal_handle (fun _ ->
+    print_endline "Received SIGINT, shutting down...";
+    exit 0));
+
   let (opt_list, cmdline_cfg) = Netplex_main.args() in
 
   let opt_list =
